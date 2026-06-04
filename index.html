@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Crypt Engine</title>
+    <title>JustAi</title>
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -38,7 +38,7 @@
 <body>
 
     <header>
-        <div style="font-weight: bold; font-size: 18px; letter-spacing: 1px;">CORE ENGINE</div>
+        <div style="font-weight: bold; font-size: 18px; letter-spacing: 1px;">JUSTAI</div>
         <div id="status">Waiting to initialize...</div>
     </header>
 
@@ -61,7 +61,6 @@
             try {
                 statusDiv.innerText = "Downloading ultimate 3B brain to browser storage... (Approx 2.2GB)";
                 
-                // Pulls directly from Hugging Face natively to your iPhone 16e hardware via WebGPU
                 generator = await pipeline('text-generation', 'onnx-community/Qwen2.5-3B-Instruct', {
                     device: 'webgpu',
                     dtype: 'q4', 
@@ -109,7 +108,6 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // Initialize on load
         initAI();
     </script>
 </body>
