@@ -200,8 +200,11 @@
         </div>
     </div>
 
-            <script type="module">
-        import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0";
+                <script type="module">
+        import { pipeline, env } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0";
+
+        // Prevent framework from getting confused by browser-specific local caching layers
+        env.allowLocalModels = false;
 
         const statusDiv = document.getElementById('status');
         const inputField = document.getElementById('prompt-input');
@@ -210,11 +213,11 @@
 
         async function initAI() {
             try {
-                // Switching to an incredibly lightweight mobile-optimized WASM engine
-                statusDiv.innerText = "Syncing Gambino secure memory...";
+                statusDiv.innerText = "Connecting to Gambino core memory...";
                 
+                // Pure WebAssembly processing (Works identically in iOS Safari and iOS Chrome)
                 generator = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
-                    device: 'wasm' // Bypasses the iOS WebGPU bug entirely
+                    device: 'wasm'
                 });
 
                 statusDiv.innerText = "Gambino Offline & Secure";
@@ -222,7 +225,7 @@
                 inputField.placeholder = "Inquire privately...";
                 sendBtn.disabled = false;
             } catch (err) {
-                statusDiv.innerText = "System memory constraint. Clear Safari tabs and refresh.";
+                statusDiv.innerText = "Memory constraint block. Clear tabs and restart Chrome.";
                 console.error(err);
             }
         }
@@ -237,20 +240,19 @@
 
             try {
                 const output = await generator(text, { 
-                    max_new_tokens: 150,
+                    max_new_tokens: 120,
                     temperature: 0.7,
                     do_sample: true
                 });
                 
-                // Pure cleanup to extract the clean response string
                 let reply = output[0].generated_text;
                 if (reply.includes(text)) {
                     reply = reply.replace(text, '').trim();
                 }
                 
-                appendMessage(reply || "Investigation conclusive.", 'ai');
+                appendMessage(reply || "Case archived.", 'ai');
             } catch (error) {
-                appendMessage("Memory boundary hit. Please refresh.", 'ai');
+                appendMessage("Execution paused. Refresh your browser.", 'ai');
             }
             statusDiv.innerText = "Gambino Offline & Secure";
         }
@@ -266,6 +268,7 @@
 
         initAI();
     </script>
+
 
 
 </body>
