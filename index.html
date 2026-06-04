@@ -200,7 +200,7 @@
         </div>
     </div>
 
-    <script type="module">
+        <script type="module">
         import { pipeline } from "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.0";
 
         const statusDiv = document.getElementById('status');
@@ -210,11 +210,11 @@
 
         async function initAI() {
             try {
-                statusDiv.innerText = "Syncing local core memory... (2.2GB)";
+                // Switching to an incredibly lightweight mobile-optimized WASM engine
+                statusDiv.innerText = "Syncing Gambino secure memory...";
                 
-                generator = await pipeline('text-generation', 'onnx-community/Qwen2.5-3B-Instruct', {
-                    device: 'webgpu',
-                    dtype: 'q4', 
+                generator = await pipeline('text-generation', 'Xenova/Qwen1.5-0.5B-Chat', {
+                    device: 'wasm' // Bypasses the iOS WebGPU bug entirely
                 });
 
                 statusDiv.innerText = "Gambino Offline & Secure";
@@ -222,7 +222,7 @@
                 inputField.placeholder = "Inquire privately...";
                 sendBtn.disabled = false;
             } catch (err) {
-                statusDiv.innerText = "Connection failed. Verify WebGPU configuration.";
+                statusDiv.innerText = "System memory constraint. Clear Safari tabs and refresh.";
                 console.error(err);
             }
         }
@@ -237,15 +237,20 @@
 
             try {
                 const output = await generator(text, { 
-                    max_new_tokens: 400,
+                    max_new_tokens: 150,
                     temperature: 0.7,
                     do_sample: true
                 });
                 
-                const reply = output[0].generated_text;
-                appendMessage(reply, 'ai');
+                // Pure cleanup to extract the clean response string
+                let reply = output[0].generated_text;
+                if (reply.includes(text)) {
+                    reply = reply.replace(text, '').trim();
+                }
+                
+                appendMessage(reply || "Investigation conclusive.", 'ai');
             } catch (error) {
-                appendMessage("Inference broken. Free active system RAM and try again.", 'ai');
+                appendMessage("Memory boundary hit. Please refresh.", 'ai');
             }
             statusDiv.innerText = "Gambino Offline & Secure";
         }
@@ -261,5 +266,6 @@
 
         initAI();
     </script>
+
 </body>
 </html>
