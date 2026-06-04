@@ -1,9 +1,9 @@
 {
-  "name": "JustAi Engine",
-  "short_name": "JustAi",
+  "name": "Gambino Engine",
+  "short_name": "Gambino",
   "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0d0d11",
-  "theme_color": "#0d0d11",
+  "background_color": "#0a0a0c",
+  "theme_color": "#0a0a0c",
   "orientation": "portrait"
 }
